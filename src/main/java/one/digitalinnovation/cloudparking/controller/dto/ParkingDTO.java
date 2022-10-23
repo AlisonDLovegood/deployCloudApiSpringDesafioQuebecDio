@@ -1,10 +1,9 @@
-package one.digitalinnovation.cloudparking.model;
+package one.digitalinnovation.cloudparking.controller.dto;
 
 import java.time.LocalDateTime;
 
-public class Parking {
+public class ParkingDTO {
 
-//    por enquanto não é uma entidade de BD, apenas representação do modelo
     private String id;
     private String license;
     private String state;
@@ -12,19 +11,6 @@ public class Parking {
     private String color;
     private LocalDateTime entryDate;
     private LocalDateTime exitDate;
-    private Double bill;
-
-//    gerando um construtor para facilitar a criacao do objeto de teste
-    public Parking(String id, String license, String state, String model, String color) {
-        this.id = id;
-        this.license = license;
-        this.state = state;
-        this.model = model;
-        this.color = color;
-    }
-
-    public Parking() {
-    }
 
     public String getId() {
         return id;
@@ -89,4 +75,8 @@ public class Parking {
     public void setBill(Double bill) {
         this.bill = bill;
     }
+
+    private Double bill;
+
+
 }
