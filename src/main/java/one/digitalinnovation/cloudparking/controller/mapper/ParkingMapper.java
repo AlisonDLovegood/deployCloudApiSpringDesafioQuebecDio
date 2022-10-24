@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 //      responsavel por fazer a conversao
 @Component
@@ -21,6 +22,6 @@ public class ParkingMapper {
 
 //    precisa converter a lista, começa convetendo um objeto
     public List<ParkingDTO> toParkingDTOList(List<Parking> parkingsList) {
-        return null;
+        return parkingsList.stream().map(this::parkingDTO).collect(Collectors.toList());
     }
 }
