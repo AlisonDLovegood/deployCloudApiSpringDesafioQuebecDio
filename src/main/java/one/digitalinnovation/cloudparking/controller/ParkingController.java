@@ -1,13 +1,13 @@
 package one.digitalinnovation.cloudparking.controller;
 
+import one.digitalinnovation.cloudparking.controller.dto.ParkingCreateDTO;
 import one.digitalinnovation.cloudparking.controller.dto.ParkingDTO;
 import one.digitalinnovation.cloudparking.controller.mapper.ParkingMapper;
 import one.digitalinnovation.cloudparking.model.Parking;
 import one.digitalinnovation.cloudparking.service.ParkingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class ParkingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ParkingDTO>> findAll(){
+    public ResponseEntity<List<ParkingDTO>> findAll() {
 
         List<Parking> parkingsList = parkingService.findAll();
         List<ParkingDTO> result = parkingMapper.toParkingDTOList(parkingsList);
@@ -35,4 +35,22 @@ public class ParkingController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingDTO> findById(@PathVariable String id) {
+        Parking parking = parkingService.findById(id);
+        ParkingDTO result = parkingMapper.toParkingDTO(parking);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping
+//    pegando um objeto limitado com os campos que preciso e retornando um objeto completo
+    public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto) {
+//        preciso fazer o inverso, pegar o dto e transformar na entidade
+//        tambem pode-se fazer com var
+        var parkingCreate = parkingMapper.toParkingCreate(dto);
+//        passando p o service
+        var parking = parkingService.create(parkingCreate);
+        var result = parkingMapper.toParkingDTO(parking);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 }
