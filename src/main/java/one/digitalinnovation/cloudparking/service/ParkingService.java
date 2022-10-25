@@ -15,15 +15,14 @@ import java.util.stream.Collectors;
 public class ParkingService {
 //    como nao ha bd ainda, criei uma lista de dados
     private static Map<String, Parking> parkingMap = new HashMap();
-//    inicializando ela com um registro
-    static {
-        var id = getUUID();
-        var id1 = getUUID();
-        Parking parking = new Parking(id, "KIZ-8909", "PE", "CORSA", "CINZA");
-        Parking parking1 = new Parking(id1, "KIZ-8990", "PE", "CORSA", "PRETO");
-        parkingMap.put(id, parking);
-        parkingMap.put(id1, parking1);
-    }
+//    static {
+//        var id = getUUID();
+//        var id1 = getUUID();
+//        Parking parking = new Parking(id, "KIZ-8909", "PE", "CORSA", "CINZA");
+//        Parking parking1 = new Parking(id1, "KIZ-8990", "PE", "CORSA", "PRETO");
+//        parkingMap.put(id, parking);
+//        parkingMap.put(id1, parking1);
+//    }
 
     public List<Parking> findAll(){
         return parkingMap.values().stream().collect(Collectors.toList());
