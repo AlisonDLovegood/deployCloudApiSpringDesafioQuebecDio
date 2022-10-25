@@ -62,4 +62,11 @@ public class ParkingService {
         parkingMap.replace(id, byId);
         return byId;
     }
+
+    public Parking exit(String id) {
+//        recuperar id do carro
+//        atualizar data de saida
+//        calcular o valor
+        return null;
+    }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 @Api(tags = "Parking Controller")
 public class ParkingController {
 
-    //    poderia ser utilizado o autowired, mas é mais aconselhavel utilizar um construtor
     private final ParkingMapper parkingMapper;
 
     private final ParkingService parkingService;
@@ -35,14 +34,12 @@ public class ParkingController {
 
         List<Parking> parkingsList = parkingService.findAll();
         List<ParkingDTO> result = parkingMapper.toParkingDTOList(parkingsList);
-//        retornando um codigo 200
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ParkingDTO> findById(@PathVariable String id) {
         Parking parking = parkingService.findById(id);
-//        erro de id invalido pode ser tratado aqui, mas como boa pratica deve-se tratar na camada de servico
         ParkingDTO result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.ok(result);
     }
@@ -54,12 +51,8 @@ public class ParkingController {
     }
 
     @PostMapping
-//    pegando um objeto limitado com os campos que preciso e retornando um objeto completo
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto) {
-//        preciso fazer o inverso, pegar o dto e transformar na entidade
-//        tambem pode-se fazer com var
         var parkingCreate = parkingMapper.toParkingCreate(dto);
-//        passando p o service
         var parking = parkingService.create(parkingCreate);
         var result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
@@ -68,7 +61,13 @@ public class ParkingController {
     public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO dto) {
         var parkingUpdate = parkingMapper.toParkingCreate(dto);
         var parking = parkingService.update(id, parkingUpdate);
-//        var result = parkingMapper.toParkingDTO(parking);
+        return ResponseEntity.ok(parkingMapper.toParkingDTO(parking));
+    }
+
+//    saida do estacionamento, tarefa:::
+    @PostMapping("/{id}")
+    public ResponseEntity<ParkingDTO> exit(@PathVariable String id) {
+        var parking = parkingService.exit(id);
         return ResponseEntity.ok(parkingMapper.toParkingDTO(parking));
     }
 
