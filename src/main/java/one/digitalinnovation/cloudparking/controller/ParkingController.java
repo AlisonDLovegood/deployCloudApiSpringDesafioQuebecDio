@@ -47,6 +47,12 @@ public class ParkingController {
         return ResponseEntity.ok(result);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable String id) {
+        parkingService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
 //    pegando um objeto limitado com os campos que preciso e retornando um objeto completo
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto) {
@@ -58,4 +64,12 @@ public class ParkingController {
         var result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+    @PutMapping
+    public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO dto) {
+        var parkingCreate = parkingMapper.toParkingCreate(dto);
+        var parking = parkingService.update(id, parkingCreate);
+        var result = parkingMapper.toParkingDTO(parking);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
 }

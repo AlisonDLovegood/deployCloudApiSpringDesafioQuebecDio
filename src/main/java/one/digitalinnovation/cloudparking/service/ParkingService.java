@@ -4,7 +4,6 @@ import one.digitalinnovation.cloudparking.exception.ParkingNotFoundException;
 import one.digitalinnovation.cloudparking.model.Parking;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -49,5 +48,18 @@ public class ParkingService {
         parkingCreate.setEntryDate(LocalDateTime.now());
         parkingMap.put(uuid, parkingCreate);
         return parkingCreate;
+    }
+
+    public void delete(String id) {
+//        se nao existir ja entra na exception
+        findById(id);
+        parkingMap.remove(id);
+    }
+
+    public Parking update(String id, Parking parkingCreate) {
+        Parking byId = findById(id);
+        byId.setColor(parkingCreate.getColor());
+        parkingMap.replace(id, byId);
+        return byId;
     }
 }
