@@ -42,6 +42,7 @@ public class ParkingController {
     @GetMapping("/{id}")
     public ResponseEntity<ParkingDTO> findById(@PathVariable String id) {
         Parking parking = parkingService.findById(id);
+//        erro de id invalido pode ser tratado aqui, mas como boa pratica deve-se tratar na camada de servico
         ParkingDTO result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.ok(result);
     }
