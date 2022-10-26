@@ -48,7 +48,6 @@ class ParkingControllerTest {
                 .post("/parking")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("license", Matchers.equalTo("KIZ-2323"))
-                .body("color", Matchers.equalTo("AMARELO"));
+                .body("license", Matchers.equalTo("KIZ-2323"));
     }
 }
