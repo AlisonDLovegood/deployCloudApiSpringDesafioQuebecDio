@@ -4,6 +4,7 @@ import one.digitalinnovation.cloudparking.exception.ParkingNotFoundException;
 import one.digitalinnovation.cloudparking.model.Parking;
 import one.digitalinnovation.cloudparking.repository.ParkingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class ParkingService {
 
     private static Map<String, Parking> parkingMap = new HashMap();
 
+    @Transactional(readOnly = true)
     public List<Parking> findAll(){
 //        substituindo codigo antigo pelo novo do repositorio
         return parkingRepository.findAll();
@@ -32,11 +34,13 @@ public class ParkingService {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+    @Transactional(readOnly = true)
     public Parking findById(String id) {
         return parkingRepository.findById(id).orElseThrow(()->
                 new ParkingNotFoundException(id));
     }
 
+    @Transactional
     public Parking create(Parking parkingCreate) {
         String uuid = getUUID();
         parkingCreate.setId(uuid);
@@ -45,11 +49,13 @@ public class ParkingService {
         return parkingCreate;
     }
 
+    @Transactional
     public void delete(String id) {
         findById(id);
         parkingRepository.deleteById(id);
     }
 
+    @Transactional
     public Parking update(String id, Parking parkingCreate) {
         Parking byId = findById(id);
         byId.setColor(parkingCreate.getColor());
@@ -57,10 +63,11 @@ public class ParkingService {
         return byId;
     }
 
-    public Parking exit(String id) {
-//        recuperar id do carro
-//        atualizar data de saida
-//        calcular o valor
-        return null;
+    @Transactional
+    public Parking checkOut(String id) {
+        Parking parking = findById(id);
+        parking.setExitDate(LocalDateTime.now());
+        parking.setBill(ParkingCheckOut.getBill(parking));
+        return parkingRepository.save(parking);
     }
 }
